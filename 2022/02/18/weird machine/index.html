@@ -20,23 +20,27 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="#Computing with Time: Microarchitectural Weird Machines#摘要1摘要概述了本文的主要贡献：提出一个新模型——𝜇WM。本质是一个混淆工具，相当于套壳加密了。  诸如 Spectre 之类的旁道攻击依赖于现代 CPU 的特性，这些特性允许通过各种操作的计时来发现微架构状态。怪异机器概念（？怎么翻译准确）是一种越来越流行的模型，用于表征由传统计算结">
+<meta property="og:type" content="website">
+<meta property="og:title" content="论文阅读">
+<meta property="og:url" content="http://example.com/2022/02/18/weird%20machine/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="#Computing with Time: Microarchitectural Weird Machines#摘要1摘要概述了本文的主要贡献：提出一个新模型——𝜇WM。本质是一个混淆工具，相当于套壳加密了。  诸如 Spectre 之类的旁道攻击依赖于现代 CPU 的特性，这些特性允许通过各种操作的计时来发现微架构状态。怪异机器概念（？怎么翻译准确）是一种越来越流行的模型，用于表征由传统计算结">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-18T08:44:14.901Z">
+<meta property="article:modified_time" content="2022-02-20T03:48:12.012Z">
 <meta property="article:author" content="hzh">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2022/02/18/weird%20machine/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"en","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/02/18/weird%20machine/","path":"2022/02/18/weird machine/","title":"论文阅读"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Hexo</title>
+<title>论文阅读 | Hexo</title>
   
 
 
@@ -66,7 +70,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">Hexo</h1>
+      <p class="site-title">Hexo</p>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -102,7 +106,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -115,6 +119,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Computing-with-Time-Microarchitectural-Weird-Machines"><span class="nav-number">1.</span> <span class="nav-text">#Computing with Time: Microarchitectural Weird Machines</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">2.</span> <span class="nav-text">#摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%BC%95%E8%A8%80"><span class="nav-number">3.</span> <span class="nav-text">#1.引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%83%8C%E6%99%AF%E5%92%8C%E5%8A%A8%E6%9C%BA"><span class="nav-number">4.</span> <span class="nav-text">#2.背景和动机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%F0%9D%9C%87WM%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B%EF%BC%88%E5%BA%94%E7%94%A8%E8%8C%83%E5%9B%B4%EF%BC%89"><span class="nav-number">4.1.</span> <span class="nav-text">#2.1 𝜇WM使用案例（应用范围）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E7%A8%8B%E5%BA%8F%E6%B7%B7%E6%B7%86%E9%97%AE%E9%A2%98"><span class="nav-number">4.2.</span> <span class="nav-text">#2.2 程序混淆问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E7%A8%8B%E5%BA%8F%E6%B7%B7%E6%B7%86%E5%92%8C%E5%BE%AE%E6%9E%B6%E6%9E%84%E5%B1%82"><span class="nav-number">4.3.</span> <span class="nav-text">#2.3 程序混淆和微架构层</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%8F%A4%E6%80%AA%E7%9A%84%E5%AF%84%E5%AD%98%E5%99%A8%E5%92%8C%E9%97%A8"><span class="nav-number">5.</span> <span class="nav-text">#3 古怪的寄存器和门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E5%8F%A4%E6%80%AA%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">5.1.</span> <span class="nav-text">#3.1 古怪寄存器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%80%AA%E5%BC%82%E9%97%A8"><span class="nav-number">5.2.</span> <span class="nav-text">#3.2 怪异门</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%80%AA%E5%BC%82%E7%94%B5%E8%B7%AF%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">6.</span> <span class="nav-text">#5 怪异电路的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E6%80%AA%E5%BC%82%E6%B7%B7%E6%B7%86%E7%B3%BB%E7%BB%9F"><span class="nav-number">6.1.</span> <span class="nav-text">#5.1 怪异混淆系统</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -162,16 +167,17 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/18/weird%20machine/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -184,9 +190,9 @@
       <meta itemprop="name" content="Hexo">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/02/18/weird%20machine/" class="post-title-link" itemprop="url">论文阅读</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          论文阅读
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -248,7 +254,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="Computing-with-Time-Microarchitectural-Weird-Machines"><a href="#Computing-with-Time-Microarchitectural-Weird-Machines" class="headerlink" title="#Computing with Time: Microarchitectural Weird Machines"></a>#Computing with Time: Microarchitectural Weird Machines</h2><h2 id="摘要"><a href="#摘要" class="headerlink" title="#摘要"></a>#摘要</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">摘要概述了本文的主要贡献：提出一个新模型——𝜇WM。本质是一个混淆工具，相当于套壳加密了。</span><br></pre></td></tr></table></figure>
+        <h2 id="Computing-with-Time-Microarchitectural-Weird-Machines"><a href="#Computing-with-Time-Microarchitectural-Weird-Machines" class="headerlink" title="#Computing with Time: Microarchitectural Weird Machines"></a>#Computing with Time: Microarchitectural Weird Machines</h2><h2 id="摘要"><a href="#摘要" class="headerlink" title="#摘要"></a>#摘要</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">摘要概述了本文的主要贡献：提出一个新模型——𝜇WM。本质是一个混淆工具，相当于套壳加密了。</span><br></pre></td></tr></table></figure>
 
 <p>诸如 Spectre 之类的旁道攻击依赖于现代 CPU 的特性，这些特性允许通过各种操作的计时来发现微架构状态。<strong>怪异机器</strong>概念（？怎么翻译准确）是一种越来越流行的模型，用于表征由传统计算结构的副作用引起的紧急执行（？有无例子参照理解）。在这项工作中，我们介绍了微架构怪异机器（即作者引入一个模型𝜇WM）：允许通过微架构实体（如分支预测器和缓存）之间的副作用和冲突来执行计算的代码结构（？结合spectre来理解这句话）。这种计算的结果被观察为时间变化。我们演示了𝜇WMs如何用作强大的混淆引擎，其中计算操作基于传统反混淆工具（基于仿真、调试、静态和动态分析技术）无法观察到的事件进行操作。我们证明，通过实现 SHA-1 哈希函数，可以使用 𝜇WM 可靠地执行任意计算。然后，我们展示一个实际示例，在该示例中，我们使用𝜇WM 来混淆恶意软件代码，这样它的被动操作对于观察者来说是不可见的，可以查看系统的架构状态，直到代码收到触发器。收到触发器后，恶意软件会解密并执行其有效负载。 为了展示混淆的有效性，我们展示了它在隐藏和随后执行一个有效载荷（泄露影子密码文件）和一个有效载荷（创建反向 shell）中的用途。</p>
 <h2 id="1-引言"><a href="#1-引言" class="headerlink" title="#1.引言"></a>#1.引言</h2><p>对程序的行为进行建模和分类的能力是大量安全相关任务的基础。 它需要一种能在软件中实现目标机器的参考模型的仿真器。<br>如果这个模型偏离了实际机器的行为，就会违反许多安全机制的关键属性。 这可以通过一个携带证明的代码框架 [2, 25, 44] 来举例说明，该框架允许任意不受信任的可执行文件在目标平台上安全运行。安全性是由目标系统检查（跟随可执行文件一起提供的）证明来建立的。该证明确保可执行文件不能在正式指定的策略之外执行任何活动(或计算)。预期和实际目标系统行为之间的任何预测都有效地违背了这种证明。<br>许多安全机制都基于，保证程序： (1) 不能执行拒绝列表中的操作，或者 (2) 只能执行允许列表中的操作。 此类机制的示例包括模型检查 [11,24,30]，形式验证 [7,8,29,35]，污点分析 [15,21,45]，控制流完整性实施 [1,68]，恶意软件检测 [ 12, 14, 31, 32, 49, 53, 67] 和沙盒 [18, 26, 66]。<br>考虑一个沙盒框架，例如 Google 的本机客户端 [66]，其中不受信任的本机代码可以在浏览器的受信任上下文中安全地执行。 尽管不受信任的代码与敏感数据并排放置，但该框架可防止沙盒代码访问受限数据或执行意外的控制流更改。这是通过重写本机可执行文件以屏蔽潜在危险的内存访问和控制流传输来完成的。 为了保证修改后的代码是安全的，框架必须基于目标 CPU 的完全准确的模型。未记录的 CPU 功能可能会导致沙盒代码的建模行为与实际行为之间存在偏差，从而导致攻击。 这种偏差可能是错误 [16]、错误规范或故意后门造成的。例如，带有无效 0x66 前缀的 jmp 指令可能导致实际 CPU 行为与反汇编程序 [19] 的输出之间存在偏差。 其效果是由于英特尔和 AMD 处理器中处理无效前缀的不同方法可能提供隐藏恶意指令的工具。<br>程序混淆 [3, 37, 50, 56] 是转换程序以防止逆向工程或其他形式的分析的一般问题。 虽然它通常用于隐藏恶意软件，但它也可用于隐藏专有应用程序中的良性敏感代码 [17] 或提高安全性 [6]。 如果混淆程序利用分析器使用的平台参考模型之外的目标平台功能，则可以构建强大的混淆引擎。<br>最近，许多论文引入了怪异机器（WM）的概念 [5, 9, 20]，试图将漏洞利用形式化。 根据这个概念，可利用的漏洞不仅提供对其他受保护数据的访问，而且创建具有自己接口的新计算设备（或原语）。这种设备及其接口可以被形式化和编程。 然后可以将漏洞利用本身视为专门为该计算设备开发的程序。 例如，缓冲区溢出会创建一个工件，该工件由攻击者通过正常程序的 API 调用向易受攻击的程序提供数据进行编程。然后将数据放在堆栈上并触发某些超出受害者程序规范的异常行为。 先前的研究表明，许多漏洞，例如缓冲区溢出 [54] 可以用作实现图灵完备语言的完全可编程机器。<br>WM 原语可以用作强大的混淆引擎。 先前的研究表明，在各种软件和硬件组件的共同实现中存在此类原语。 对这些 WM 进行编程不需要激活任何漏洞。例如，图灵完备的 WM 是利用页面错误处理硬件 [4]、ELF 加载器 [55] 和异常处理程序 [46] 机制中鲜为人知的工件构建的。 这些 WM 提供了近乎理想的混淆功能。 首先，他们使用反恶意软件未识别为危险的计算机系统功能。 其次，它们自然难以分析。 据我们所知，尚未提出通用的 WM 检测方法。（因为wm可以理解为一种攻击部署的手段吗？）<br>在本文中，我们建立了一种使用 CPU 的微架构 (MA) 组件实现的新型 WM，它们复杂的组件间交互以及它如何影响常见操作的延迟。我们称这种机器为𝜇WMs（微架构怪异机器的缩写）。 在高层次上，计算是通过执行诸如内存加载和存储、跳转和条件分支等常规指令并观察执行时间来执行的。 WM 由三种抽象组件构成。奇怪的寄存器 (WR) 是使用 MA 组件的状态实现的数据存储实体。 奇怪的门（WG）是基本的计算组件，它根据逻辑转换存储在 WR 中的数据。 WGs 利用各种 MA 组件状态的纠缠及其副作用，例如混叠、驱逐和推测执行。 奇怪的电路 (WC) 是 WG 的集合，实现了更复杂的逻辑。 我们证明了所提出的计算框架可用于执行通用计算。<br>由于逆向工程和二进制分析工具不模拟 MA 组件，我们相信我们的框架可以用作程序混淆的通用方法。此外，即使检测工具在其参考模型中包含系统的 MA 层，我们认为，由于 WM 计算的自然灵活性和跨 CPU 架构的差异，精确检测 WM 计算具有挑战性。此外，我们还讨论了我们如何为 𝜇WMs 找到几种提高安全性的令人惊讶的方法。 我们认为，本文通过从不同的角度看待负责 MA 攻击的组件并从计算工件的角度研究它们，从而引入了一个新的研究领域</p>
@@ -261,7 +267,6 @@
 <h3 id="3-2-怪异门"><a href="#3-2-怪异门" class="headerlink" title="#3.2 怪异门"></a>#3.2 怪异门</h3><h2 id="5-怪异电路的应用"><a href="#5-怪异电路的应用" class="headerlink" title="#5 怪异电路的应用"></a>#5 怪异电路的应用</h2><p>在前面的部分中，我们探讨了简单怪异电路的设计和实现，这些电路展示了创建功能完整的微架构不可见布尔怪异电路的能力。 在本节中，我们将首先演示奇怪的混淆，一种使用更复杂 WC 的恶意软件混淆系统。 然后，我们将更深入地研究怪异混淆系统使用的基于多门 TSX 的怪异 XOR 电路。 最后，我们将演示一个使用奇怪电路的 SHA-1 实现。</p>
 <h3 id="5-1-怪异混淆系统"><a href="#5-1-怪异混淆系统" class="headerlink" title="#5.1 怪异混淆系统"></a>#5.1 怪异混淆系统</h3><p>在本节中，我们将描述我们的怪异混淆 (WO) 系统的操作，以及我们如何使用该系统来混淆恶意软件代码，以使观察者无法看到它的被动操作，而观察者完全有权查看系统的架构状态，直到代码接收到 在正文中具有特殊触发值的 ping。 收到触发器后，恶意软件会解密并执行其有效负载。 我们将演示如何使用我们的 WO 系统来隐藏并执行一个可泄露影子密码文件的有效负载，以及一个创建反向 shell 的有效负载。<br>在我们的场景中，我们处于攻击者的行列，该攻击者设法获得了高级持续威胁 (APT)，例如特洛伊木马，安装到在对手网络内运行的计算机上。 我们的对手，防御者，有能力查看受感染计算机的所有架构状态。 我们的对手有能力在调试器或其他动态分析工具中运行我们受感染的程序。我们希望这项工作能激发未来开发静态分析工具的工作，这些工具将在我们的 APT 等程序中检测和表征 𝜇WM，但如第 1 节和第 7 节所述，这些工具尚不存在。 因此，我们不会将这些工具赋予我们的对手能力。<br>在构建我们的 APT 时，我们首先获取有效载荷，选择一个随机的 128 位 AES 密钥，使用该密钥加密有效载荷并将加密的有效载荷存储在图 4 a) 所示的结构中，从第 324 位开始。然后我们放置一个特制的 jmp 第 164 位的指令后跟 AES 密钥。 然后我们创建一个长度为 160 位的随机一次性填充。 然后，我们将填充的每一位与从第 164 位开始的内存结构的位进行异或。这具有针对一次性密码“加密” jmp 指令和 AES 密钥的效果。 160 位一次性填充稍后将用作触发值，使我们的恶意软件进入其活动阶段。 我们通过用随机数据填充结构的前 160 位以及随后的非法除以零指令来完成准备工作，然后将整个结构复制到 TSX 块的主体中。<br>我们的 APT 是隐藏在接收 ping 的程序中的恶意软件。 在操作期间，每次它接收到 ping 时，每个 ping 正文有效负载都用作 XOR 密钥，以转换图 4 中标记为 xor-encrypted JMP&#x2F;AES 密钥的内存并覆盖标记为随机的位。 然后将第 32-160 位用作 AES 密钥来解密内存区域末尾的有效负载。最后，整个区域被映射并在 TSX 块内执行，如图 5.1 所示。 如果 ping 正文中的密钥是正确的，那么导致 goto target_function 的 jmp 指令出现在位 0-32 将开始执行解密的有效负载。 因为我们的 XOR 和 AES 密钥在这种情况下是正确的，所以有效载荷将正确执行并向攻击者打开一个反向 shell。<br>在静默阶段，在触发攻击之前，受影响的机器可能会收到很多 ping。 当接收到的 ping 不包含触发值时，TSX 块的前 160 位将包含错误的 AES 密钥，从而导致解密的有效负载中出现垃圾值，并且没有 jmp 指令。不是正确地跳过 AES 密钥的内容并除以零指令，而是按原样执行这个错误解密的区域。 这通常会导致近乎立即的故障，但在它到达位 160 164 处的 tmp &#x3D; tmp&#x2F;0 指令时保证会发生故障。然后回滚此故障，因为它位于 TSX 块内，并且程序 继续等待下一个 ping 触发。<br>此 APT 的所有关键部分都在 TSX 块中运行，调试器无法直接观察到这些块。 此外，AES 密钥的一次性“解密”由基于 TSX 的 XOR WG 执行，该 XOR WG 在架构上没有可见的中间值。 在触发成功并且有效负载已经运行之前，分析器将看不到有效负载的任何部分。<br>如第 4.1 节所述，基于 TSX 的 XOR 逻辑门的执行不是 100% 准确的，也不能保证总是返回正确的结果。 实际上，这意味着每个触发器必须由 APT 多次评估。 我们选择这个评估倍数为 10。成功解密和执行反向 shell 恶意软件有效负载需要 100 次实验。 6 次 ping 的中位数表明在 &lt;60 次 XOR 尝试中成功地对图 4 中所示的 160 位进行了 XOR 变换。 此操作的详细性能在第 6 节中进行检查。</p>
 
-      
     </div>
 
     
@@ -269,206 +274,22 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/15/2022-2.15/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="hzh">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/02/15/2022-2.15/" class="post-title-link" itemprop="url">今日事，今日毕</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-02-15 11:49:35" itemprop="dateCreated datePublished" datetime="2022-02-15T11:49:35+08:00">2022-02-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-02-17 15:50:25" itemprop="dateModified" datetime="2022-02-17T15:50:25+08:00">2022-02-17</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>127</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>一个良好的开端，希望以后每周都能坚持写博客。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/02/15/2022-2.15/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/13/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="hzh">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/02/13/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-02-13 16:48:03" itemprop="dateCreated datePublished" datetime="2022-02-13T16:48:03+08:00">2022-02-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-02-17 16:40:44" itemprop="dateModified" datetime="2022-02-17T16:40:44+08:00">2022-02-17</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%96%B0%E6%89%8B%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">新手教程</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>367</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/02/13/hello-world/#more" rel="contents">
-                Read more &raquo;
-              </a>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/15/2022-2.15/" rel="prev" title="今日事，今日毕">
+                  <i class="fa fa-chevron-left"></i> 今日事，今日毕
+                </a>
             </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+            <div class="post-nav-item">
+            </div>
+          </div>
     </footer>
   </article>
 </div>
+
 
 
 
